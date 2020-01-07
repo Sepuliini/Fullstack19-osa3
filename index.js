@@ -92,7 +92,7 @@ app.post('/api/persons', (request, response) => {
     })
   }
 
-  console.log("index of:",persons.filter(person => (person.name === body.name)))
+  console.log("index of:", persons.filter(person => (person.name === body.name)))
 
   if (persons.filter(person => (person.name === body.name)).length > 0) {
     return response.status(400).json({ 
