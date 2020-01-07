@@ -2,6 +2,7 @@ const http = require('http')
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+const morgan = require('morgan')
 
 let persons = [
   {
@@ -34,6 +35,13 @@ let persons = [
 ]
 
 app.use(bodyParser.json())
+
+morgan.token('data',(request, response) => {
+  console.log('konsoli:', request.body)
+  return JSON.stringify(request.body)
+})
+
+app.use(morgan(":method :url :status :res[content-length] - :response-time ms :data"))
 
 app.get('/info', (request, response) => {
   const maara = persons.length
@@ -123,7 +131,13 @@ const generateId = () => {
   return maxId + 1
 }
 
-const port = 3001
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
+
+const port = 3005
 app.listen(port)
 console.log(`Server running on port ${port}`)
 console.log(persons)
