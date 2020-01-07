@@ -35,7 +35,7 @@ let persons = [
 ]
 
 app.use(bodyParser.json())
-
+morgan('tiny')
 morgan.token('data',(request, response) => {
   console.log('konsoli:', request.body)
   return JSON.stringify(request.body)
